@@ -51,12 +51,11 @@ data "nutanix_categories_v2" "categories-list" {}
 
 
 
-
 # list all virtual machines
 data "nutanix_virtual_machines_v2" "vms" {}
 
 resource "nutanix_virtual_machine_v2" "windows_server_2025" {
-  name                 = "Test-Windows-Server-2025"
+  name                 = var.vm_name
   description          = "Test Windows Server 2025 orchestrated by Terraform"
   num_cores_per_socket = 2
   num_sockets          = 2

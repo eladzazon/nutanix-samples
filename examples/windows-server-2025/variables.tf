@@ -18,3 +18,8 @@ variable "subnet_name" {
 variable "image_name" {
   type = string
 }
+
+variable "vm_name" {
+  type        = string
+  description = "Name of the virtual machine"
+}

@@ -5,3 +5,4 @@ nutanix_port     = 443
 
 image_name  = "<image-or-template-name>"
 subnet_name = "<subnet-name>"
+vm_name     = "<vm-name>"
