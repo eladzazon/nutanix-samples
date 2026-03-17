@@ -28,71 +28,56 @@ locals {
     cluster.ext_id if cluster.config[0].cluster_function[0] != "PRISM_CENTRAL"
   ][0]
 
-  # Inline unattend.xml rendered from variables — base64 encoded for the API
-  unattend_xml = <<-XML
-    <?xml version="1.0" encoding="utf-8"?>
-    <unattend xmlns="urn:schemas-microsoft-com:unattend">
-      <settings pass="specialize">
-        <component name="Microsoft-Windows-Shell-Setup"
-                   processorArchitecture="amd64"
-                   publicKeyToken="31bf3856ad364e35"
-                   language="neutral"
-                   versionScope="nonSxS"
-                   xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
-          <ComputerName>${var.vm_name}</ComputerName>
+  # Escape special characters to ensure XML is valid even with special passwords
+  esc_vm_name     = replace(replace(replace(replace(replace(var.vm_name, "&", "&amp;"), "<", "&lt;"), ">", "&gt;"), "\"", "&quot;"), "'", "&apos;")
+  esc_domain_name = replace(replace(replace(replace(replace(var.domain_name, "&", "&amp;"), "<", "&lt;"), ">", "&gt;"), "\"", "&quot;"), "'", "&apos;")
+  esc_domain_user = replace(replace(replace(replace(replace(var.domain_user, "&", "&amp;"), "<", "&lt;"), ">", "&gt;"), "\"", "&quot;"), "'", "&apos;")
+  esc_domain_pass = replace(replace(replace(replace(replace(var.domain_password, "&", "&amp;"), "<", "&lt;"), ">", "&gt;"), "\"", "&quot;"), "'", "&apos;")
+
+  # Inline unattend.xml — re-ordered and streamlined for better compatibility
+  unattend_xml = <<XML
+<unattend xmlns="urn:schemas-microsoft-com:unattend">
+    <settings pass="specialize">
+        <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="*" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
+            <ComputerName>${local.esc_vm_name}</ComputerName>
         </component>
-        <component name="Microsoft-Windows-UnattendedJoin"
-                   processorArchitecture="amd64"
-                   publicKeyToken="31bf3856ad364e35"
-                   language="neutral"
-                   versionScope="nonSxS"
-                   xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
-          <Identification>
-            <Credentials>
-              <Domain>${var.domain_name}</Domain>
-              <Password>${var.domain_password}</Password>
-              <Username>${var.domain_user}</Username>
-            </Credentials>
-            <JoinDomain>${var.domain_name}</JoinDomain>
-          </Identification>
+        <component name="Microsoft-Windows-UnattendedJoin" processorArchitecture="*" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
+            <Identification>
+                <Credentials>
+                    <Domain>${local.esc_domain_name}</Domain>
+                    <Password>${local.esc_domain_pass}</Password>
+                    <Username>${local.esc_domain_user}</Username>
+                </Credentials>
+                <JoinDomain>${local.esc_domain_name}</JoinDomain>
+            </Identification>
         </component>
-      </settings>
-      <settings pass="oobeSystem">
-        <component name="Microsoft-Windows-Shell-Setup"
-                   processorArchitecture="amd64"
-                   publicKeyToken="31bf3856ad364e35"
-                   language="neutral"
-                   versionScope="nonSxS"
-                   xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
-          <UserAccounts>
-            <AdministratorPassword>
-              <Value>${var.domain_password}</Value>
-              <PlainText>true</PlainText>
-            </AdministratorPassword>
-          </UserAccounts>
-          <OOBE>
-            <HideEULAPage>true</HideEULAPage>
-            <HideLocalUserAccountScreen>true</HideLocalUserAccountScreen>
-            <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
-            <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
-            <NetworkLocation>Work</NetworkLocation>
-            <ProtectYourPC>1</ProtectYourPC>
-          </OOBE>
+    </settings>
+    <settings pass="oobeSystem">
+        <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="*" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
+            <OOBE>
+                <HideEULAPage>true</HideEULAPage>
+                <HideLocalUserAccountScreen>true</HideLocalUserAccountScreen>
+                <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
+                <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
+                <NetworkLocation>Work</NetworkLocation>
+                <ProtectYourPC>1</ProtectYourPC>
+            </OOBE>
+            <UserAccounts>
+                <AdministratorPassword>
+                    <Value>${local.esc_domain_pass}</Value>
+                    <PlainText>true</PlainText>
+                </AdministratorPassword>
+            </UserAccounts>
         </component>
-        <component name="Microsoft-Windows-International-Core"
-                   processorArchitecture="amd64"
-                   publicKeyToken="31bf3856ad364e35"
-                   language="neutral"
-                   versionScope="nonSxS"
-                   xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
-          <InputLocale>en-US</InputLocale>
-          <SystemLocale>en-US</SystemLocale>
-          <UILanguage>en-US</UILanguage>
-          <UserLocale>en-US</UserLocale>
+        <component name="Microsoft-Windows-International-Core" processorArchitecture="*" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
+            <InputLocale>en-US</InputLocale>
+            <SystemLocale>en-US</SystemLocale>
+            <UILanguage>en-US</UILanguage>
+            <UserLocale>en-US</UserLocale>
         </component>
-      </settings>
-    </unattend>
-  XML
+    </settings>
+</unattend>
+XML
 }
 
 # pull storage container data
