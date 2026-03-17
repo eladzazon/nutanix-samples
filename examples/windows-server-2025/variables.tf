@@ -23,3 +23,9 @@ variable "vm_name" {
   type        = string
   description = "Name of the virtual machine"
 }
+
+variable "admin_password" {
+  type        = string
+  sensitive   = true
+  description = "Password for the local Administrator account"
+}

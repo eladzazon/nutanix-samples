@@ -40,3 +40,9 @@ variable "domain_password" {
   sensitive   = true
   description = "Password for the domain join account"
 }
+
+variable "admin_password" {
+  type        = string
+  sensitive   = true
+  description = "Password for the local Administrator account"
+}
