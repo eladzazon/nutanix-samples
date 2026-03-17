@@ -40,8 +40,3 @@ variable "domain_password" {
   sensitive   = true
   description = "Password for the domain join account"
 }
-variable "domain_ou" {
-  type        = string
-  description = "Optional OU path for the computer account (e.g. OU=Servers,DC=corp,DC=example,DC=com)"
-  default     = ""
-}

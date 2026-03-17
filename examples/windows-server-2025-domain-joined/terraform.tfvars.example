@@ -11,4 +11,3 @@ vm_name = "<computer-name>"
 domain_name     = "<corp.example.com>"
 domain_user     = "<domain-join-account>"
 domain_password = "<domain-join-password>"
-domain_ou       = "<OU=Servers,DC=corp,DC=example,DC=com>" # optional, leave empty string "" to use default

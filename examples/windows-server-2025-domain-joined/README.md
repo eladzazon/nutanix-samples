@@ -56,7 +56,6 @@ The `unattend.xml` is rendered **inline** from Terraform variables and base64-en
 | `domain_name` | FQDN of the AD domain (e.g. `corp.example.com`) | Yes |
 | `domain_user` | Account with permission to join the domain | Yes |
 | `domain_password` | Password for the domain join account | Yes |
-| `domain_ou` | OU path for the computer account | No (defaults to `""`) |
 
 ## Outputs
 

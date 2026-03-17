@@ -54,7 +54,6 @@ locals {
               <Username>${var.domain_user}</Username>
             </Credentials>
             <JoinDomain>${var.domain_name}</JoinDomain>
-            <MachineObjectOU>${var.domain_ou}</MachineObjectOU>
           </Identification>
         </component>
       </settings>
