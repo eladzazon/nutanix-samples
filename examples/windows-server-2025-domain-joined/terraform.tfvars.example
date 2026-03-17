@@ -1,0 +1,14 @@
+nutanix_username = "<your-username>"
+nutanix_password = "<your-password>"
+nutanix_endpoint = "<prism-central-ip-or-hostname>"
+nutanix_port     = 443
+
+image_name  = "<image-or-template-name>"
+subnet_name = "<subnet-name>"
+
+vm_name = "<computer-name>"
+
+domain_name     = "<corp.example.com>"
+domain_user     = "<domain-join-account>"
+domain_password = "<domain-join-password>"
+domain_ou       = "<OU=Servers,DC=corp,DC=example,DC=com>" # optional, leave empty string "" to use default

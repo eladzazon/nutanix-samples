@@ -7,6 +7,7 @@ A collection of Terraform examples for provisioning and managing infrastructure 
 | Example | Description |
 |---|---|
 | [windows-server-2025](./examples/windows-server-2025/) | Deploy a Windows Server 2025 VM from an existing image |
+| [windows-server-2025-domain-joined](./examples/windows-server-2025-domain-joined/) | Deploy a Windows Server 2025 VM and auto-join it to an Active Directory domain |
 
 ## Prerequisites
 
