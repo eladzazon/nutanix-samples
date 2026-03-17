@@ -4,7 +4,7 @@ This example provisions a **Windows Server 2025** virtual machine on Nutanix AHV
 
 ## How It Works
 
-The `unattend.xml` is rendered **inline** from Terraform variables and base64-encoded — no external file needed. It runs during Windows Specialize pass and uses the `Microsoft-Windows-UnattendedJoin` component to join the domain. Subsequent `terraform apply` runs will not re-trigger sysprep thanks to `lifecycle { ignore_changes = [guest_customization] }`.
+The `unattend.xml` is rendered **inline** from Terraform variables and base64-encoded — no external file needed. It includes `offlineServicing` and `generalize` passes for stability, and uses the `Microsoft-Windows-UnattendedJoin` component during the `specialize` pass to join the domain. Subsequent `terraform apply` runs will not re-trigger sysprep thanks to `lifecycle { ignore_changes = [guest_customization] }`.
 
 ## Prerequisites
 
@@ -56,6 +56,7 @@ The `unattend.xml` is rendered **inline** from Terraform variables and base64-en
 | `domain_name` | FQDN of the AD domain (e.g. `corp.example.com`) | Yes |
 | `domain_user` | Account with permission to join the domain | Yes |
 | `domain_password` | Password for the domain join account | Yes |
+| `admin_password` | Password for the local Administrator account | Yes |
 
 ## Outputs
 
