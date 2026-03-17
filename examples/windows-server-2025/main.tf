@@ -97,7 +97,7 @@ resource "nutanix_virtual_machine_v2" "windows_server_2025" {
   }
 
   boot_config {
-    legacy_boot {
+    uefi_boot {
       boot_device {
         boot_device_disk {
           disk_address {
