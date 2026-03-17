@@ -1,0 +1,7 @@
+nutanix_username = "<your-username>"
+nutanix_password = "<your-password>"
+nutanix_endpoint = "<prism-central-ip-or-hostname>"
+nutanix_port     = 443
+
+image_name  = "<image-or-template-name>"
+subnet_name = "<subnet-name>"
